@@ -9,6 +9,7 @@ const bcrypt = require("bcrypt");
 
 const userRouter = require("./routers/users");
 const authRouter = require("./routers/auth");
+const postRouter = require("./routers/post");
 
 dotenv.config();
 
@@ -25,12 +26,9 @@ app.use(express.json());
 app.use(helmet());
 app.use(morgan("common"));
 
-app.get("/user", (req, res) => {
-  res.send("hello user");
-});
-
-app.use("/backend/api/users", userRouter);
 app.use("/backend/api/auth", authRouter);
+app.use("/backend/api/users", userRouter);
+app.use("/backend/api/posts", postRouter);
 
 app.listen(8200, () => {
   console.log("app is running on " + 8200);
