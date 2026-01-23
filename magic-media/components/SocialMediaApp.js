@@ -11,29 +11,45 @@ import {
   User,
   PlusSquare,
 } from "lucide-react";
+import { api, IMAGE_URL } from "../lib/api";
 import LoginPage from "./auth/LoginPage";
 import RegisterPage from "./auth/RegisterPage";
 import Navbar from "../components/layout/Navbar";
 import HomePage from "../components/posts/HomePage";
 import ProfilePage from "../components/profile/ProfilePage";
 import CreatePostPage from "../components/posts/CreatePostPage";
-
-const API_URL = "http://localhost:8200/backend/api";
+import EditPostPage from "../components/posts/EditPostPage";
 
 const SocialMediaApp = () => {
   const [currentUser, setCurrentUser] = useState(null);
-  const [currentPage, setCurrentPage] = useState("login");
+  const [currentPage, setCurrentPage] = useState("home");
   const [posts, setPosts] = useState([]);
   const [users, setUsers] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [editingPostId, setEditingPostId] = useState(null);
 
   useEffect(() => {
     const savedUser = localStorage.getItem("currentUser");
     if (savedUser) {
-      setCurrentUser(JSON.parse(savedUser));
-      setCurrentPage("home");
+      try {
+        setCurrentUser(JSON.parse(savedUser));
+      } catch (error) {
+        console.error("Error parsing saved user:", error);
+        localStorage.removeItem("currentUser");
+        setCurrentPage("login");
+      }
+    } else {
+      setCurrentPage("login");
     }
   }, []);
+
+  // Save currentUser to localStorage whenever it changes
+  useEffect(() => {
+    if (currentUser) {
+      localStorage.setItem("currentUser", JSON.stringify(currentUser));
+    }
+  }, [currentUser]);
 
   useEffect(() => {
     if (currentUser && currentPage === "home") {
@@ -43,26 +59,33 @@ const SocialMediaApp = () => {
   }, [currentUser, currentPage]);
 
   const fetchPosts = async () => {
+    setLoading(true);
     try {
-      const response = await fetch(`${API_URL}/posts/getAllPost`);
-      const data = await response.json();
-      if (data.status) {
+      const data = await api.getAllPosts();
+      if (data.status && data.data) {
         setPosts(data.data);
+      } else {
+        setPosts([]);
       }
     } catch (error) {
       console.error("Error fetching posts:", error);
+      setPosts([]);
+    } finally {
+      setLoading(false);
     }
   };
 
   const fetchUsers = async () => {
     try {
-      const response = await fetch(`${API_URL}/users/getUsers`);
-      const data = await response.json();
-      if (data.status) {
+      const data = await api.getAllUsers();
+      if (data.status && data.data) {
         setUsers(data.data);
+      } else {
+        setUsers([]);
       }
     } catch (error) {
       console.error("Error fetching users:", error);
+      setUsers([]);
     }
   };
 
@@ -70,6 +93,8 @@ const SocialMediaApp = () => {
     localStorage.removeItem("currentUser");
     setCurrentUser(null);
     setCurrentPage("login");
+    setPosts([]);
+    setUsers([]);
   };
 
   if (!currentUser) {
@@ -98,20 +123,32 @@ const SocialMediaApp = () => {
             posts={posts}
             setPosts={setPosts}
             currentUser={currentUser}
+            setCurrentUser={setCurrentUser}
             users={users}
             setSelectedUser={setSelectedUser}
             setCurrentPage={setCurrentPage}
+            setEditingPostId={setEditingPostId}
+            loading={loading}
           />
         )}
         {currentPage === "profile" && (
           <ProfilePage
             user={selectedUser || currentUser}
             currentUser={currentUser}
+            setCurrentUser={setCurrentUser}
             setCurrentPage={setCurrentPage}
           />
         )}
         {currentPage === "create" && (
           <CreatePostPage
+            currentUser={currentUser}
+            setCurrentPage={setCurrentPage}
+            fetchPosts={fetchPosts}
+          />
+        )}
+        {currentPage === "edit" && editingPostId && (
+          <EditPostPage
+            postId={editingPostId}
             currentUser={currentUser}
             setCurrentPage={setCurrentPage}
             fetchPosts={fetchPosts}

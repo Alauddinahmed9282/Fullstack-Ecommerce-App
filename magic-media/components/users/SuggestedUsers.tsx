@@ -1,34 +1,39 @@
 import { UserMinus, UserPlus } from "lucide-react";
 import { useState } from "react";
-import { API_URL } from "../../lib/api";
+import { api } from "../../lib/api";
 
 const SuggestedUsers = ({
   users,
   currentUser,
+  setCurrentUser,
   setSelectedUser,
   setCurrentPage,
 }) => {
-  const [userStates, setUserStates] = useState({});
+  const [loading, setLoading] = useState({});
 
   const handleFollow = async (userId) => {
+    setLoading((prev) => ({ ...prev, [userId]: true }));
     try {
       const isFollowing = currentUser.following?.includes(userId);
-      const endpoint = isFollowing ? "unfollow" : "follow";
+      const data = isFollowing
+        ? await api.unfollowUser(userId, currentUser._id)
+        : await api.followUser(userId, currentUser._id);
 
-      const response = await fetch(`${API_URL}/users/${endpoint}/${userId}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId: currentUser._id }),
-      });
+      if (data.status) {
+        // Update currentUser state
+        const updatedFollowing = isFollowing
+          ? currentUser.following.filter((id) => id !== userId)
+          : [...(currentUser.following || []), userId];
 
-      if (response.ok) {
-        setUserStates((prev) => ({
+        setCurrentUser((prev) => ({
           ...prev,
-          [userId]: !isFollowing,
+          following: updatedFollowing,
         }));
       }
     } catch (error) {
       console.error("Error following user:", error);
+    } finally {
+      setLoading((prev) => ({ ...prev, [userId]: false }));
     }
   };
 
@@ -37,27 +42,32 @@ const SuggestedUsers = ({
     setCurrentPage("profile");
   };
 
+  const filteredUsers = users
+    .filter((u) => u._id !== currentUser._id)
+    .slice(0, 5);
+
   return (
     <div className="bg-white rounded-xl shadow-md p-6 sticky top-24">
       <h3 className="font-semibold text-gray-900 mb-4">Suggested Users</h3>
       <div className="space-y-4">
-        {users
-          .filter((u) => u._id !== currentUser._id)
-          .slice(0, 5)
-          .map((user) => {
-            const isFollowing =
-              userStates[user._id] ?? currentUser.following?.includes(user._id);
+        {filteredUsers.length === 0 ? (
+          <p className="text-center text-gray-500 text-sm">
+            No users to suggest
+          </p>
+        ) : (
+          filteredUsers.map((user) => {
+            const isFollowing = currentUser.following?.includes(user._id);
 
             return (
               <div key={user._id} className="flex items-center justify-between">
                 <button
                   onClick={() => viewProfile(user)}
-                  className="flex items-center gap-3 hover:opacity-80 transition-opacity"
+                  className="flex items-center gap-3 hover:opacity-80 transition-opacity flex-1 text-left"
                 >
-                  <div className="w-10 h-10 bg-gradient-to-br from-green-500 to-teal-500 rounded-full flex items-center justify-center text-white font-semibold">
+                  <div className="w-10 h-10 bg-gradient-to-br from-green-500 to-teal-500 rounded-full flex items-center justify-center text-white font-semibold flex-shrink-0">
                     {user.username?.[0]?.toUpperCase()}
                   </div>
-                  <div className="text-left">
+                  <div>
                     <p className="font-medium text-gray-900 text-sm">
                       {user.username}
                     </p>
@@ -66,11 +76,12 @@ const SuggestedUsers = ({
                 </button>
                 <button
                   onClick={() => handleFollow(user._id)}
+                  disabled={loading[user._id]}
                   className={`p-2 rounded-lg transition-colors ${
                     isFollowing
                       ? "bg-gray-100 text-gray-600 hover:bg-gray-200"
                       : "bg-indigo-100 text-indigo-600 hover:bg-indigo-200"
-                  }`}
+                  } disabled:opacity-50`}
                 >
                   {isFollowing ? (
                     <UserMinus className="w-4 h-4" />
@@ -80,7 +91,8 @@ const SuggestedUsers = ({
                 </button>
               </div>
             );
-          })}
+          })
+        )}
       </div>
     </div>
   );

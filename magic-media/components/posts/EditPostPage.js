@@ -1,14 +1,38 @@
-// Create Post Page
-import { PlusSquare, Trash2 } from "lucide-react";
-import { useState } from "react";
-import { api } from "../../lib/api";
+// Edit Post Page
+import { Trash2 } from "lucide-react";
+import { useState, useEffect } from "react";
+import { api, IMAGE_URL } from "../../lib/api";
 
-const CreatePostPage = ({ currentUser, setCurrentPage, fetchPosts }) => {
+const EditPostPage = ({ postId, currentUser, setCurrentPage, fetchPosts }) => {
   const [description, setDescription] = useState("");
   const [image, setImage] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
+  const [currentImageUrl, setCurrentImageUrl] = useState(null);
   const [message, setMessage] = useState("");
   const [uploading, setUploading] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchPost = async () => {
+      try {
+        const data = await api.getPost(postId);
+        if (data.status && data.data) {
+          const post = data.data;
+          setDescription(post.caption || post.description || "");
+          setCurrentImageUrl(post.imageUrl);
+        } else {
+          setMessage("Failed to load post");
+        }
+      } catch (error) {
+        console.error("Error fetching post:", error);
+        setMessage("Error loading post");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPost();
+  }, [postId]);
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -38,7 +62,11 @@ const CreatePostPage = ({ currentUser, setCurrentPage, fetchPosts }) => {
     setImagePreview(null);
   };
 
-  const handleCreatePost = async () => {
+  const removeCurrentImage = () => {
+    setCurrentImageUrl(null);
+  };
+
+  const handleUpdatePost = async () => {
     if (!description.trim()) {
       setMessage("Please write something!");
       return;
@@ -50,38 +78,41 @@ const CreatePostPage = ({ currentUser, setCurrentPage, fetchPosts }) => {
     try {
       const formData = new FormData();
       formData.append("description", description);
-      formData.append("userId", currentUser._id);
-      formData.append("username", currentUser.username);
 
       if (image) {
         formData.append("imageUrl", image);
       }
 
-      const data = await api.createPost(formData);
+      const data = await api.updatePost(postId, formData);
       if (data.status) {
-        setMessage("Post created successfully!");
-        setDescription("");
-        setImage(null);
-        setImagePreview(null);
+        setMessage("Post updated successfully!");
         await fetchPosts();
         setTimeout(() => setCurrentPage("home"), 1500);
       } else {
-        setMessage(data.message || "Failed to create post");
+        setMessage(data.message || "Failed to update post");
       }
     } catch (error) {
-      setMessage(error.message || "Error creating post");
+      setMessage(error.message || "Error updating post");
       console.error("Error:", error);
     } finally {
       setUploading(false);
     }
   };
 
+  if (loading) {
+    return (
+      <div className="max-w-2xl mx-auto">
+        <div className="bg-white rounded-xl shadow-md p-8 text-center">
+          <p className="text-gray-500">Loading post...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="max-w-2xl mx-auto">
       <div className="bg-white rounded-xl shadow-md p-8">
-        <h2 className="text-2xl font-bold text-gray-900 mb-6">
-          Create New Post
-        </h2>
+        <h2 className="text-2xl font-bold text-gray-900 mb-6">Edit Post</h2>
 
         <div className="space-y-6">
           <div className="flex items-center gap-3 mb-4">
@@ -92,7 +123,7 @@ const CreatePostPage = ({ currentUser, setCurrentPage, fetchPosts }) => {
               <p className="font-semibold text-gray-900">
                 {currentUser.username}
               </p>
-              <p className="text-sm text-gray-500">Create a post</p>
+              <p className="text-sm text-gray-500">Edit your post</p>
             </div>
           </div>
 
@@ -131,16 +162,32 @@ const CreatePostPage = ({ currentUser, setCurrentPage, fetchPosts }) => {
             </div>
           )}
 
+          {currentImageUrl && !imagePreview && (
+            <div className="relative">
+              <img
+                src={`${IMAGE_URL}/${currentImageUrl}`}
+                alt="Current"
+                className="w-full rounded-lg max-h-96 object-cover"
+              />
+              <button
+                onClick={removeCurrentImage}
+                disabled={uploading}
+                className="absolute top-2 right-2 bg-red-500 text-white p-2 rounded-full hover:bg-red-600 transition-colors disabled:opacity-50"
+              >
+                <Trash2 className="w-5 h-5" />
+              </button>
+            </div>
+          )}
+
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              Add Image (Optional)
+              Change Image (Optional)
             </label>
             <div className="flex items-center gap-4">
               <label className="flex-1 cursor-pointer">
                 <div className="flex items-center justify-center gap-2 px-4 py-3 border-2 border-dashed border-gray-300 rounded-lg hover:border-indigo-500 transition-colors disabled:opacity-50">
-                  <PlusSquare className="w-5 h-5 text-gray-400" />
                   <span className="text-gray-600">
-                    {image ? image.name : "Choose an image"}
+                    {image ? image.name : "Choose a new image"}
                   </span>
                 </div>
                 <input
@@ -171,11 +218,11 @@ const CreatePostPage = ({ currentUser, setCurrentPage, fetchPosts }) => {
 
           <div className="flex gap-4">
             <button
-              onClick={handleCreatePost}
+              onClick={handleUpdatePost}
               disabled={uploading || !description.trim()}
               className="flex-1 bg-indigo-600 text-white py-3 rounded-lg hover:bg-indigo-700 transition-colors font-medium disabled:bg-gray-300 disabled:cursor-not-allowed"
             >
-              {uploading ? "Posting..." : "Post"}
+              {uploading ? "Updating..." : "Update Post"}
             </button>
             <button
               onClick={() => setCurrentPage("home")}
@@ -191,4 +238,4 @@ const CreatePostPage = ({ currentUser, setCurrentPage, fetchPosts }) => {
   );
 };
 
-export default CreatePostPage;
+export default EditPostPage;
