@@ -1,6 +1,6 @@
 // Create Post Page
 import { PlusSquare, Trash2 } from "lucide-react";
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { api } from "../../lib/api";
 
 const CreatePostPage = ({ currentUser, setCurrentPage, fetchPosts }) => {
@@ -9,6 +9,10 @@ const CreatePostPage = ({ currentUser, setCurrentPage, fetchPosts }) => {
   const [imagePreview, setImagePreview] = useState(null);
   const [message, setMessage] = useState("");
   const [uploading, setUploading] = useState(false);
+
+  const memoizedFetchPosts = useCallback(() => {
+    return fetchPosts();
+  }, [fetchPosts]);
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -63,7 +67,7 @@ const CreatePostPage = ({ currentUser, setCurrentPage, fetchPosts }) => {
         setDescription("");
         setImage(null);
         setImagePreview(null);
-        await fetchPosts();
+        await memoizedFetchPosts();
         setTimeout(() => setCurrentPage("home"), 1500);
       } else {
         setMessage(data.message || "Failed to create post");
@@ -116,6 +120,7 @@ const CreatePostPage = ({ currentUser, setCurrentPage, fetchPosts }) => {
 
           {imagePreview && (
             <div className="relative">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={imagePreview}
                 alt="Preview"

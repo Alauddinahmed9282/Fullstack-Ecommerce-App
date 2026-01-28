@@ -56,7 +56,7 @@ const SocialMediaApp = () => {
       fetchPosts();
       fetchUsers();
     }
-  }, [currentUser, currentPage]);
+  }, [currentUser]);
 
   const fetchPosts = async () => {
     setLoading(true);

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { ArrowLeft, UserMinus, UserPlus } from "lucide-react";
 import { api } from "../../lib/api";
 import PostCard from "../posts/PostCard";
@@ -10,12 +10,7 @@ const ProfilePage = ({ user, currentUser, setCurrentUser, setCurrentPage }) => {
   const [followLoading, setFollowLoading] = useState(false);
   const [displayUser, setDisplayUser] = useState(user);
 
-  useEffect(() => {
-    fetchUserPosts();
-    setDisplayUser(user);
-  }, [user]);
-
-  const fetchUserPosts = async () => {
+  const fetchUserPosts = useCallback(async () => {
     setLoading(true);
     try {
       const data = await api.getPostsByUser(user._id);
@@ -30,7 +25,12 @@ const ProfilePage = ({ user, currentUser, setCurrentUser, setCurrentPage }) => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [user._id]);
+
+  useEffect(() => {
+    fetchUserPosts();
+    setDisplayUser(user);
+  }, [user, fetchUserPosts]);
 
   const handleFollow = async () => {
     setFollowLoading(true);
@@ -168,6 +168,8 @@ const ProfilePage = ({ user, currentUser, setCurrentUser, setCurrentPage }) => {
                 currentUser={currentUser}
                 setPosts={setUserPosts}
                 posts={userPosts}
+                setCurrentPage={setCurrentPage}
+                setEditingPostId={() => {}}
               />
             ))}
           </div>
