@@ -1,370 +1,412 @@
 # 🌟 Magic Media - Social Media Platform
 
-A modern, feature-rich social media platform built with cutting-edge web technologies. Connect with friends, share moments, and build meaningful relationships in a beautifully designed interface.
+<div align="center">
 
-![Next.js](https://img.shields.io/badge/Next.js-15-black?style=flat-square&logo=next.js)
-![Express](https://img.shields.io/badge/Express-5.1-green?style=flat-square&logo=express)
-![MongoDB](https://img.shields.io/badge/MongoDB-Latest-green?style=flat-square&logo=mongodb)
-![React](https://img.shields.io/badge/React-19-blue?style=flat-square&logo=react)
-![Tailwind CSS](https://img.shields.io/badge/Tailwind-4-38B2AC?style=flat-square&logo=tailwind-css)
+A **modern, full-stack social media platform** built with cutting-edge web technologies. Connect with friends, share moments, and build meaningful relationships in a beautifully designed interface.
 
-## 🚀 Quick Start
+[![Next.js](https://img.shields.io/badge/Next.js-15.5.6-000000?style=for-the-badge&logo=next.js&logoColor=white)](https://nextjs.org)
+[![React](https://img.shields.io/badge/React-19.1.0-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://react.dev)
+[![Express](https://img.shields.io/badge/Express-5.1.0-90C53F?style=for-the-badge&logo=express&logoColor=white)](https://expressjs.com)
+[![MongoDB](https://img.shields.io/badge/MongoDB-Latest-13AA52?style=for-the-badge&logo=mongodb&logoColor=white)](https://www.mongodb.com)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com)
 
-For a fast setup guide, see [QUICK_START.md](./QUICK_START.md) - it includes step-by-step instructions and testing procedures.
+[Getting Started](#-installation--setup) • [Features](#-features) • [API Docs](#-api-endpoints) • [Troubleshooting](#-troubleshooting)
+
+</div>
+
+---
+
+## 📋 Table of Contents
+
+- [Features](#-features)
+- [Tech Stack](#-tech-stack)
+- [Project Structure](#-project-structure)
+- [Installation](#-installation--setup)
+- [API Endpoints](#-api-endpoints)
+- [Usage Examples](#-usage-examples)
+- [Security](#-security-features)
+- [Troubleshooting](#-troubleshooting)
+
+---
 
 ## ✨ Features
 
 ### 🎯 Core Functionality
 
-- **User Authentication** - Secure registration and login with bcrypt password hashing
-- **Create Posts** - Share images and captions with your audience
-- **Like System** - Interactive like/unlike functionality
-- **Comments** - Engage with posts through meaningful comments
-- **User Profiles** - Personalized user profiles with post history
-- **Follow/Unfollow** - Connect with users and manage your network
-- **Suggested Users** - Discover and connect with new users
-- **Image Upload** - Upload and store images with Multer
+- 🔐 **User Authentication** - Secure registration & login with bcrypt hashing
+- 📸 **Create Posts** - Share images and captions with your audience
+- ❤️ **Like System** - Interactive like/unlike functionality
+- 💬 **Comments** - Engage through meaningful comments
+- 👤 **User Profiles** - Personalized profiles with post history
+- 👥 **Follow/Unfollow** - Connect and manage your network
+- 🔍 **Suggested Users** - Discover and connect with new people
+- 📤 **Image Upload** - Upload and store images with Multer
 
 ### 🎨 Frontend Features
 
-- **Modern UI** - Built with React and Tailwind CSS
-- **Responsive Design** - Works seamlessly across all devices
-- **Fast Performance** - Optimized with Next.js 15 and Turbopack
-- **Type-Safe** - TypeScript support for better development experience
-- **Interactive Components** - Smooth user interactions with Lucide React icons
+- ✅ Modern UI with React and Tailwind CSS
+- ✅ Fully responsive design (mobile, tablet, desktop)
+- ✅ Lightning-fast with Next.js 15 & Turbopack
+- ✅ Type-safe development with TypeScript
+- ✅ Beautiful icons with Lucide React
+- ✅ Smooth state management with React hooks
 
 ### 🔒 Backend Features
 
-- **RESTful API** - Clean and organized API endpoints
-- **CORS Support** - Secure cross-origin resource sharing
-- **Security Headers** - Protected with Helmet.js
-- **Database Logging** - Request logging with Morgan
-- **Error Handling** - Robust error management throughout the app
-- **Form Validation** - Input validation with duplicate detection
+- ✅ Clean RESTful API architecture
+- ✅ MongoDB integration with Mongoose
+- ✅ CORS protection & security headers
+- ✅ Comprehensive error handling
+- ✅ Form validation with duplicate detection
+- ✅ Request logging with Morgan
+
+---
 
 ## 🛠️ Tech Stack
 
 ### Frontend
 
-- **Framework**: Next.js 15.5.6
-- **UI Library**: React 19.1.0
-- **Styling**: Tailwind CSS 4
-- **HTTP Client**: Axios
-- **Icons**: Lucide React
-- **Language**: TypeScript/JavaScript
+- **Next.js** 15.5.6 - React framework with SSR
+- **React** 19.1.0 - UI library
+- **Tailwind CSS** 4 - Utility-first CSS
+- **Axios** 1.12.2 - HTTP client
+- **Lucide React** 0.546.0 - SVG icons
+- **TypeScript** 5 - Type-safe development
 
 ### Backend
 
-- **Runtime**: Node.js
-- **Framework**: Express 5.1.0
-- **Database**: MongoDB with Mongoose 8.19.0
-- **Authentication**: bcrypt
-- **File Upload**: Multer 2.0.2
-- **Security**: Helmet, CORS
-- **Logging**: Morgan
-- **Environment**: dotenv
+- **Node.js** 16+ - JavaScript runtime
+- **Express** 5.1.0 - Web framework
+- **MongoDB** - NoSQL database
+- **Mongoose** 8.19.0 - MongoDB ODM
+- **Bcrypt** 6.0.0 - Password hashing
+- **Multer** 2.0.2 - File upload middleware
+- **Helmet** 8.1.0 - Security headers
+- **CORS** 2.8.5 - Cross-origin handling
 
-## 📋 Project Structure
+---
+
+## 📂 Project Structure
 
 ```
 fullstack-social-app/
-├── backend/                    # Express API Server
-│   ├── models/                # MongoDB schemas
-│   │   ├── User.js           # User model
-│   │   ├── Post.js           # Post model
-│   │   └── Comment.js        # Comment model
-│   ├── routers/              # API routes
-│   │   ├── auth.js           # Authentication endpoints
-│   │   ├── users.js          # User management endpoints
-│   │   ├── post.js           # Post CRUD endpoints
-│   │   └── comment.js        # Comment endpoints
-│   ├── middleware/           # Custom middleware
-│   │   └── upload.js         # File upload configuration
-│   ├── uploads/              # Uploaded images storage
-│   ├── index.js              # Express app initialization
-│   └── package.json          # Backend dependencies
+├── backend/
+│   ├── index.js                  # Server entry
+│   ├── .env                      # Configuration
+│   ├── models/                   # MongoDB schemas
+│   │   ├── User.js
+│   │   ├── Post.js
+│   │   └── Comment.js
+│   ├── routers/                  # API routes
+│   │   ├── auth.js
+│   │   ├── users.js
+│   │   ├── post.js
+│   │   └── comment.js
+│   ├── middleware/
+│   │   └── upload.js             # File upload config
+│   └── uploads/                  # Image storage
 │
-└── magic-media/              # Next.js Frontend
-    ├── app/                  # Next.js app directory
-    │   ├── layout.tsx        # Root layout
-    │   ├── page.js          # Home page
-    │   ├── globals.css      # Global styles
-    │   └── favicon.ico
-    ├── components/          # React components
+└── magic-media/                  # Next.js Frontend
+    ├── app/                      # Next.js pages
+    │   ├── layout.tsx
+    │   ├── page.js
+    │   └── globals.css
+    ├── components/               # React components
     │   ├── SocialMediaApp.js
-    │   ├── auth/            # Authentication pages
-    │   │   ├── LoginPage.js
-    │   │   └── RegisterPage.js
-    │   ├── posts/           # Post-related components
-    │   │   ├── HomePage.js
-    │   │   ├── CreatePostPage.js
-    │   │   └── PostCard.js
-    │   ├── profile/         # User profile components
-    │   │   └── ProfilePage.tsx
-    │   ├── users/           # User discovery components
-    │   │   └── SuggestedUsers.tsx
-    │   └── layout/          # Layout components
-    │       └── Navbar.js
-    ├── lib/                 # Utility functions
-    │   └── api.js          # API client configuration
-    ├── public/              # Static assets
-    ├── package.json         # Frontend dependencies
-    ├── tsconfig.json        # TypeScript configuration
-    ├── next.config.ts       # Next.js configuration
-    └── postcss.config.js    # PostCSS configuration
+    │   ├── auth/                 # Login/Register
+    │   ├── posts/                # Post features
+    │   ├── profile/              # User profiles
+    │   ├── users/                # User discovery
+    │   └── layout/               # Navigation
+    ├── lib/
+    │   └── api.js                # API client
+    └── public/                   # Static assets
 ```
 
-## 🛠️ Installation & Setup
+---
 
-### Prerequisites
+## 🚀 Installation & Setup
 
-- Node.js (v16 or higher)
-- MongoDB (running locally or remote connection string)
-- npm or yarn
+### ✅ Prerequisites
 
-### Backend Setup
+- **Node.js** v16+ ([Download](https://nodejs.org))
+- **MongoDB** ([Download](https://www.mongodb.com/try/download/community))
+- **npm** or **yarn**
 
-1. **Navigate to backend directory**
+### 📦 Backend Setup
 
-   ```bash
-   cd backend
-   ```
+```bash
+# Navigate to backend
+cd backend
 
-2. **Install dependencies**
+# Install dependencies
+npm install
 
-   ```bash
-   npm install
-   ```
+# Create .env file with:
+# MONGOOSE_URL=mongodb://localhost:27017/magic-media
+# PORT=8200
+# NODE_ENV=development
 
-3. **Create `.env` file**
+# Start MongoDB (macOS with Homebrew)
+brew services start mongodb-community
 
-   ```env
-   MONGOOSE_URL=mongodb://localhost:27017/magic-media
-   PORT=8200
-   NODE_ENV=development
-   ```
+# Or use Docker
+docker run -d -p 27017:27017 --name mongodb mongo:latest
 
-4. **Start MongoDB** (if not running)
+# Start backend server
+npm run dev
 
-   ```bash
-   # macOS with Homebrew
-   brew services start mongodb-community
+# Server runs on http://localhost:8200
+```
 
-   # Or with Docker
-   docker run -d -p 27017:27017 --name mongodb mongo:latest
-   ```
+### 🎨 Frontend Setup
 
-5. **Start the server**
+```bash
+# Navigate to frontend
+cd magic-media
 
-   ```bash
-   # Development mode with hot reload
-   npm run dev
+# Install dependencies
+npm install
 
-   # Production mode
-   npm start
-   ```
+# Create .env.local with:
+# NEXT_PUBLIC_API_URL=http://localhost:8200/backend/api
+# NEXT_PUBLIC_IMAGE_URL=http://localhost:8200/uploads
 
-The backend will run on `http://localhost:8200`
+# Start frontend
+npm run dev
 
-### Frontend Setup
+# App runs on http://localhost:3000
 
-1. **Navigate to frontend directory**
+# Build for production
+npm run build
+npm start
+```
 
-   ```bash
-   cd magic-media
-   ```
-
-2. **Install dependencies**
-
-   ```bash
-   npm install
-   ```
-
-3. **Create `.env.local` file**
-
-   ```env
-   NEXT_PUBLIC_API_URL=http://localhost:8200/backend/api
-   NEXT_PUBLIC_IMAGE_URL=http://localhost:8200/uploads
-   ```
-
-4. **Start the development server**
-
-   ```bash
-   npm run dev
-   ```
-
-5. **Build for production**
-   ```bash
-   npm run build
-   npm start
-   ```
-
-The frontend will run on `http://localhost:3000`
+---
 
 ## 📚 API Endpoints
 
-### Authentication
+### 🔐 Authentication
 
-- `POST /backend/api/auth/register` - Register a new user
-- `POST /backend/api/auth/login` - Login user
+```
+POST   /backend/api/auth/register     Register new user
+POST   /backend/api/auth/login        Login user
+```
 
-### Posts
+### 📸 Posts
 
-- `POST /backend/api/posts/add` - Create a new post (with image upload)
-- `GET /backend/api/posts/getAllPost` - Get all posts
-- `GET /backend/api/posts/getPost/:id` - Get specific post by ID
-- `GET /backend/api/posts/getPostByUser/:id` - Get posts by user ID
-- `PUT /backend/api/posts/update/:id` - Update a post
-- `DELETE /backend/api/posts/delete/:id` - Delete a post
-- `PUT /backend/api/posts/like/:id` - Like/Unlike a post
+```
+POST   /backend/api/posts/add                    Create post
+GET    /backend/api/posts/getAllPost            Get all posts
+GET    /backend/api/posts/getPost/:id           Get post by ID
+GET    /backend/api/posts/getPostByUser/:id     Get user posts
+PUT    /backend/api/posts/update/:id            Update post
+DELETE /backend/api/posts/delete/:id            Delete post
+PUT    /backend/api/posts/like/:id              Like/Unlike post
+```
 
-### Comments
+### 💬 Comments
 
-- `POST /backend/api/posts/comment/add` - Add comment to post
-- `GET /backend/api/posts/comment/getComments/:postId` - Get post comments
-- `DELETE /backend/api/posts/comment/delete/:id` - Delete a comment
+```
+POST   /backend/api/posts/comment/add                  Add comment
+GET    /backend/api/posts/comment/getComments/:postId Get comments
+DELETE /backend/api/posts/comment/delete/:id          Delete comment
+```
 
-### Users
+### 👥 Users
 
-- `GET /backend/api/users/getAllUsers` - Get all users
-- `GET /backend/api/users/getUser/:id` - Get user profile
-- `PUT /backend/api/users/update/:id` - Update user profile
-- `PUT /backend/api/users/follow/:id` - Follow a user
-- `PUT /backend/api/users/unfollow/:id` - Unfollow a user
+```
+GET    /backend/api/users/getAllUsers     Get all users
+GET    /backend/api/users/getUser/:id     Get user profile
+PUT    /backend/api/users/update/:id      Update profile
+PUT    /backend/api/users/follow/:id      Follow user
+PUT    /backend/api/users/unfollow/:id    Unfollow user
+```
 
-## 🔐 Security Features
+### 📋 Example API Calls
 
-- **Password Hashing**: Bcrypt for secure password storage
-- **Input Validation**: Comprehensive form validation with duplicate email/mobile detection
-- **CORS Protection**: Configured CORS to prevent unauthorized requests
-- **Security Headers**: Helmet.js for HTTP security headers
-- **Database Security**: MongoDB connection with authentication ready
-- **File Upload Safety**: Multer configured with size and format restrictions
+**Register:**
+
+```bash
+curl -X POST http://localhost:8200/backend/api/auth/register \
+  -H "Content-Type: application/json" \
+  -d '{
+    "username": "john_doe",
+    "emailId": "john@example.com",
+    "mobile": "9876543210",
+    "password": "SecurePass123",
+    "gender": "male"
+  }'
+```
+
+**Create Post:**
+
+```bash
+curl -X POST http://localhost:8200/backend/api/posts/add \
+  -F "userId=USER_ID" \
+  -F "username=john_doe" \
+  -F "description=Amazing sunset!" \
+  -F "imageUrl=@/path/to/image.jpg"
+```
+
+---
 
 ## 📝 Usage Examples
 
-### Create a Post
+### 1️⃣ Create Account
 
-1. Click the "Create" button in the navbar
-2. Write a caption (up to 500 characters)
-3. Optionally add an image (JPG, PNG, GIF, max 5MB)
+1. Go to http://localhost:3000
+2. Click "Register"
+3. Fill in: username (3+ chars), email, mobile (10 digits), password (6+ chars), gender
+4. Click "Register"
+
+### 2️⃣ Login
+
+1. Enter email and password
+2. Click "Login"
+
+### 3️⃣ Create Post
+
+1. Click "Create" in navbar
+2. Write caption (max 500 chars)
+3. Optionally upload image (JPG, PNG, GIF - max 5MB)
 4. Click "Post"
 
-### Like a Post
+### 4️⃣ Interact
 
-- Click the heart icon on any post to like/unlike
+- **❤️ Like:** Click heart icon
+- **💬 Comment:** Click comment icon, type, press Enter
+- **🗑️ Delete:** Click trash (your posts only)
+- **✏️ Edit:** Click edit icon (your posts only)
 
-### Leave a Comment
+### 5️⃣ Discover Users
 
-- Click the comment section and type your message
-- Press Enter to submit your comment
+1. View "Suggested Users" on right sidebar
+2. Click profile picture to view posts
+3. Click "Follow" to add to network
 
-### Discover Users
+### 6️⃣ View Profile
 
-- Check the "Suggested Users" section on the right sidebar
-- Click a user's profile picture to view their posts
-- Click the follow/unfollow button to manage your network
+1. Click "Profile" in navbar
+2. See your posts and follower stats
 
-### View Your Profile
+---
 
-- Click "Profile" in the navbar
-- See your posts and follower/following statistics
+## 🔐 Security Features
+
+| Feature                   | Description                              |
+| ------------------------- | ---------------------------------------- |
+| 🔐 **Password Hashing**   | Bcrypt for secure storage                |
+| ✅ **Input Validation**   | Form validation with duplicate detection |
+| 🛡️ **CORS Protection**    | Prevents unauthorized requests           |
+| 🔒 **Security Headers**   | Helmet.js HTTP headers                   |
+| 📤 **File Upload Safety** | Multer with size/format restrictions     |
+| 🗄️ **Database Security**  | MongoDB ready for authentication         |
+
+---
 
 ## 🐛 Troubleshooting
 
 ### MongoDB Connection Error
 
-**Error**: `MongoDB connection error: connect ECONNREFUSED`
+```bash
+# Start MongoDB
+brew services start mongodb-community
 
-**Solution**:
+# Or use Docker
+docker run -d -p 27017:27017 --name mongodb mongo:latest
 
-- Start MongoDB service: `brew services start mongodb-community`
-- Or use Docker: `docker run -d -p 27017:27017 --name mongodb mongo:latest`
-- Update `MONGOOSE_URL` in `.env` if using a remote database
+# Clear npm cache if issues persist
+npm cache clean --force
+```
 
 ### Port Already in Use
 
-**Port 8200 (Backend)**:
-
 ```bash
+# Find process on port 8200
 lsof -i :8200
 kill -9 <PID>
-```
 
-**Port 3000 (Frontend)**:
-
-```bash
+# Find process on port 3000
 lsof -i :3000
 kill -9 <PID>
 ```
 
 ### Image Not Loading
 
-- Verify backend is running on port 8200
-- Check `.env.local` has correct `NEXT_PUBLIC_IMAGE_URL`
-- Ensure image file exists in `backend/uploads/`
-- Clear browser cache if needed
+- ✅ Backend running on port 8200
+- ✅ `.env.local` has correct `NEXT_PUBLIC_IMAGE_URL`
+- ✅ Image exists in `backend/uploads/`
+- ✅ Clear browser cache
 
 ### CORS Errors
 
-- Backend already has CORS configured for `http://localhost:3000`
-- If using a different port, update the CORS origin in `backend/index.js`
+Backend configured for `http://localhost:3000`. For different port, update `backend/index.js`.
 
-### Form Validation Errors
+### Form Validation Issues
 
-- **Username**: minimum 3 characters
-- **Email**: must be in valid format (user@example.com)
-- **Mobile**: must be exactly 10 digits
-- **Password**: minimum 6 characters, must match confirmation
+| Field    | Rules             |
+| -------- | ----------------- |
+| Username | Min 3 characters  |
+| Email    | Valid format      |
+| Mobile   | Exactly 10 digits |
+| Password | Min 6 characters  |
 
-## 🎯 Getting Started
+---
 
-1. Clone the repository
-2. Follow the Backend Setup instructions
-3. Follow the Frontend Setup instructions
-4. Navigate to `http://localhost:3000` in your browser
-5. Create an account or login
-6. Start sharing posts and connecting with others!
+## 🎯 Future Enhancements
 
-## 🚧 Future Enhancements
-
-- [ ] Edit post functionality
-- [ ] User search feature
+- [ ] Advanced search & user search
 - [ ] Real-time notifications
 - [ ] Direct messaging
 - [ ] Story feature
 - [ ] Dark mode theme
-- [ ] User profiles with bio
 - [ ] Video uploads
 - [ ] Admin dashboard
-- [ ] Deploy to production (Vercel + Heroku)
+- [ ] Production deployment
+
+For detailed quick start, see [QUICK_START.md](./QUICK_START.md)
+
+---
 
 ## 🤝 Contributing
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+1. 🍴 Fork the repository
+2. 🌿 Create feature branch (`git checkout -b feature/AmazingFeature`)
+3. 📝 Commit changes (`git commit -m 'Add AmazingFeature'`)
+4. 📤 Push to branch (`git push origin feature/AmazingFeature`)
+5. 🔀 Open Pull Request
+
+---
 
 ## 📄 License
 
-This project is licensed under the ISC License - see the LICENSE file for details.
+ISC License - see LICENSE file for details.
 
-## 👨‍💻 Author
+---
 
-Created with ❤️ by Syftet
+## 👨‍💻 About
+
+**Magic Media** is a full-stack social media platform demonstrating modern web development with React, Next.js, Express.js, MongoDB, and Tailwind CSS.
+
+Created with ❤️ by developers who believe in connecting people through technology.
 
 ---
 
 ## 📞 Support
 
-If you encounter any issues or have questions, please refer to [QUICK_START.md](./QUICK_START.md) for troubleshooting or open an issue on the repository.
-
-## 🎉 Acknowledgments
-
-- Next.js for the amazing React framework
-- Express.js for the robust backend framework
-- MongoDB for flexible data storage
-- Tailwind CSS for beautiful styling
-- All open-source contributors
+- 📖 Check [QUICK_START.md](./QUICK_START.md) for setup
+- 🔍 Review [Troubleshooting](#-troubleshooting) section
+- 💬 Open an issue on the repository
 
 ---
 
-**Happy Coding! 🚀** Feel free to star ⭐ if you find this project useful!
+<div align="center">
+
+### ⭐ If this project is helpful, please give it a star!
+
+**Happy Coding! 🚀**
+
+Made with ❤️ for the developer community
+
+</div>
