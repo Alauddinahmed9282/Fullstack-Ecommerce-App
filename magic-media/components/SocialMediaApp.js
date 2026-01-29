@@ -137,6 +137,7 @@ const SocialMediaApp = () => {
             currentUser={currentUser}
             setCurrentUser={setCurrentUser}
             setCurrentPage={setCurrentPage}
+            setEditingPostId={setEditingPostId}
           />
         )}
         {currentPage === "create" && (

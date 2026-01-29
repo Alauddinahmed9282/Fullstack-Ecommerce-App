@@ -4,7 +4,13 @@ import { api } from "../../lib/api";
 import PostCard from "../posts/PostCard";
 
 // Profile Page
-const ProfilePage = ({ user, currentUser, setCurrentUser, setCurrentPage }) => {
+const ProfilePage = ({
+  user,
+  currentUser,
+  setCurrentUser,
+  setCurrentPage,
+  setEditingPostId,
+}) => {
   const [userPosts, setUserPosts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [followLoading, setFollowLoading] = useState(false);
@@ -169,7 +175,7 @@ const ProfilePage = ({ user, currentUser, setCurrentUser, setCurrentPage }) => {
                 setPosts={setUserPosts}
                 posts={userPosts}
                 setCurrentPage={setCurrentPage}
-                setEditingPostId={() => {}}
+                setEditingPostId={setEditingPostId}
               />
             ))}
           </div>
